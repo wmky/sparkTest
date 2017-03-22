@@ -14,10 +14,12 @@ public class HiveJdbcClient {
         try{
             Class.forName(driverName);
         }catch (ClassNotFoundException e){
+            loger.info("may be HiveServer2 of the Hostname not start,try to check it with" + "\t" + "ps aux | grep -i HiveServer2");
             loger.info("Connect to Hive situation Exception" + e.getStackTrace());
 //            System.exit(1);
         }
-        Connection con = DriverManager.getConnection("jdbc:hive2://192.168.19.17:10000","kaikai","kaikai");
+//        Connection con = DriverManager.getConnection("jdbc:hive2://192.168.19.17:10000","kaikai","kaikai");
+        Connection con = DriverManager.getConnection("jdbc:hive2://192.168.19.17:10000","admin","admin");
         Statement stmt = con.createStatement();
         String tableName = "dw.dim_page";
 
@@ -61,6 +63,8 @@ public class HiveJdbcClient {
         res = stmt.executeQuery(sql);
 //        Exception in thread "main" java.sql.SQLException: Error while processing statement: FAILED: Execution Error, return code 1 from org.apache.hadoop.hive.ql.exec.mr.MapRedTask
         //Job Submission failed with exception 'org.apache.hadoop.security.AccessControlException(Permission denied: user=kaikai, access=WRITE, inode="/user":hadoop:hadoop:drwxrwxr-x
+        // 若为admin的权限就可以write hdfs上文件，则可以成功执行。
+        // 额外说明下，当直接在IDEA中执行时，其实使用xshell登陆beeline的时候，可以看到详细的同步执行日志。当然也可以直接在hive的存放log处查看具体的内容
         while (res.next()) {
             System.out.println(res.getString(1));
         }
