@@ -9,7 +9,7 @@ import org.apache.spark.{SparkContext, SparkConf}
 object SqlTest {
   def main(args: Array[String]) {
 //    spark-submit --class com.juanpi.bi.sparksql.SqlTest --master spark://bidev-cdh004:7077 sparkTest-1.0.jar /SqlTest
-    val conf = new SparkConf().setAppName("SqlTest").setMaster("spark://bidev-cdh004:7077")
+    val conf = new SparkConf().setAppName("SqlTest")
     val sc = new SparkContext(conf)
     val sqlContext = new HiveContext(sc)
 //    sqlContext.sql("select * from dw.dim_page").collect().foreach(println)
